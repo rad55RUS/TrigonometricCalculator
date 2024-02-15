@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TrigonometricCalculatorFromRad55" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.TrigonometricCalculatorFromRad55" parent="Base.Theme.TrigonometricCalculatorFromRad55" />
+
+    <!-- Button styles -->
+    <style name="NumberButton" parent="@style/Widget.Material3.Button">
+        <!-- Font style -->
+        <item name="android:textColor">#FDFDFD</item>
+        <item name="android:textSize">24sp</item>
+        <!-- Button style -->
+        <item name="android:backgroundTint">#212121</item>
+        <item name="android:radius">1sp</item>
+        <item name="shapeAppearanceOverlay">@style/ButtonShapeAppearance</item>
+    </style>
+    <style name="ButtonShapeAppearance">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">32sp</item>
+    </style>
+</resources>
