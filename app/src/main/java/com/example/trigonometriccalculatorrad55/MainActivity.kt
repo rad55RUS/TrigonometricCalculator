@@ -1,12 +1,13 @@
 package com.example.trigonometriccalculatorrad55
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import android.util.TypedValue
+import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.trigonometriccalculatorrad55.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,27 +19,84 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /// Observers
-        val nameObserver = Observer<String> { newText ->
+        // Observers
+        val CalculatorTextObserver = Observer<String> { newText ->
             // Update the UI, in this case, a TextView.
             binding.calculatorTextView.text = newText
         }
 
-        model.calculatorText.observe(this, nameObserver)
-        ///
+        model.calculatorText.observe(this, CalculatorTextObserver)
 
-        /// Bindings
+        val CalculatorTextSizeObserver = Observer<Float> { newSize ->
+            // Update the UI, in this case, a TextView.
+            binding.calculatorTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, newSize)
+        }
+
+        model.calculatorTextSize.observe(this, CalculatorTextSizeObserver)
+        //
+
+        // Bindings
+        /// Number input buttons
         binding.buttonNumber1.setOnClickListener {
             model.numberButtonClick(1)
         }
+        binding.buttonNumber2.setOnClickListener {
+            model.numberButtonClick(2)
+        }
+        binding.buttonNumber3.setOnClickListener {
+            model.numberButtonClick(3)
+        }
+        binding.buttonNumber4.setOnClickListener {
+            model.numberButtonClick(4)
+        }
+        binding.buttonNumber5.setOnClickListener {
+            model.numberButtonClick(5)
+        }
+        binding.buttonNumber6.setOnClickListener {
+            model.numberButtonClick(6)
+        }
+        binding.buttonNumber7.setOnClickListener {
+            model.numberButtonClick(7)
+        }
+        binding.buttonNumber8.setOnClickListener {
+            model.numberButtonClick(8)
+        }
+        binding.buttonNumber9.setOnClickListener {
+            model.numberButtonClick(9)
+        }
+        binding.buttonNumber0.setOnClickListener {
+            model.numberButtonClick(0)
+        }
+        binding.buttonComma.setOnClickListener {
+            model.commaButtonClick()
+        }
         ///
+        /// Function buttons
+        binding.buttonSin.setOnClickListener {
+            model.trigonometricFunctionEvent(1)
+        }
+        binding.buttonTg.setOnClickListener {
+            model.trigonometricFunctionEvent(2)
+        }
+        binding.buttonSec.setOnClickListener {
+            model.trigonometricFunctionEvent(3)
+        }
+        ///
+        /// Operation buttons
+        binding.buttonClear.setOnClickListener {
+            model.clearButtonClick()
+        }
+        binding.buttonBackspace.setOnClickListener {
+            model.backspaceButtonClick()
+        }
+        ///
+        //
 
-        /// Default values
+        // Default values
         model.calculatorText.value = "0"
-        ///
+        //
     }
 }

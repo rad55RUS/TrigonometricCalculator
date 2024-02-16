@@ -18,7 +18,8 @@
         android:text="TextView"
         android:textAlignment="textEnd"
         android:textColor="#F4F4F4"
-        android:textSize="34sp" />
+        android:textSize="48sp"
+        tools:ignore="HardcodedText,RtlCompat"/>
 
     <View
         android:id="@+id/view"
@@ -27,36 +28,186 @@
         android:background="#252525" />
 
     <LinearLayout
+        style="@style/ButtonLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="177dp"
         android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_viewMode"
+            style="@style/NumberButton"
+            android:backgroundTint="#4C3326"
+            android:layout_height="match_parent"
+            android:text="rad"
+            tools:ignore="HardcodedText"/>
+
+        <Button
+            android:id="@+id/button_2nd"
+            style="@style/NumberButton"
+            android:backgroundTint="#4C3326"
+            android:layout_height="match_parent"
+            android:text="2nd"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/button_co"
+            style="@style/NumberButton"
+            android:backgroundTint="#4C3326"
+            android:layout_height="match_parent"
+            android:text="co"
+            tools:ignore="HardcodedText"/>
+
+        <Button
+            android:id="@+id/button_clear"
+            style="@style/NumberButton"
+            android:backgroundTint="#8F2828"
+            android:layout_height="match_parent"
+            android:text="@string/Clear" />
 
     </LinearLayout>
 
     <LinearLayout
+        style="@style/ButtonLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="77dp"
         android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_number7"
+            style="@style/NumberButton"
+            android:layout_height="match_parent"
+            android:text="@string/Number7" />
+
+        <Button
+            android:id="@+id/button_number8"
+            style="@style/NumberButton"
+            android:layout_height="match_parent"
+            android:text="@string/Number8" />
+
+        <Button
+            android:id="@+id/button_number9"
+            style="@style/NumberButton"
+            android:layout_height="match_parent"
+            android:text="@string/Number9" />
+
+        <Button
+            android:id="@+id/button_backspace"
+            style="@style/NumberButton"
+            android:layout_height="match_parent"
+            android:backgroundTint="#8F2828"
+            android:backgroundTintMode="add"
+            android:drawableLeft="@drawable/backspace_icon"
+            android:drawableTint="#FDFDFD"
+            tools:ignore="RtlHardcoded,SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
     <LinearLayout
+        style="@style/ButtonLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="77dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_number4"
+            style="@style/NumberButton"
+            android:layout_height="match_parent"
+            android:text="@string/Number4" />
+
+        <Button
+            android:id="@+id/button_number5"
+            style="@style/NumberButton"
+            android:layout_height="match_parent"
+            android:text="@string/Number5" />
+
+        <Button
+            android:id="@+id/button_number6"
+            style="@style/NumberButton"
+            android:layout_height="match_parent"
+            android:text="@string/Number6" />
+
+        <Button
+            android:id="@+id/button_sin"
+            style="@style/NumberButton"
+            android:backgroundTint="#2B4161"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="sin"
+            tools:ignore="HardcodedText"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ButtonLinearLayout"
+        android:layout_width="match_parent"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_number1"
             style="@style/NumberButton"
             android:layout_width="73dp"
-            android:layout_height="77dp"
-            android:layout_marginEnd="193dp"
-            android:layout_marginBottom="63dp"
+            android:layout_height="match_parent"
             android:text="@string/Number1" />
+
+        <Button
+            android:id="@+id/button_number2"
+            style="@style/NumberButton"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:text="@string/Number2" />
+
+        <Button
+            android:id="@+id/button_number3"
+            style="@style/NumberButton"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:text="@string/Number3" />
+
+        <Button
+            android:id="@+id/button_tg"
+            style="@style/NumberButton"
+            android:backgroundTint="#2B4161"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:text="tan"
+            tools:ignore="HardcodedText"/>
+
     </LinearLayout>
 
     <LinearLayout
+        style="@style/ButtonLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"></LinearLayout>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_PI"
+            style="@style/NumberButton"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/PI" />
+
+        <Button
+            android:id="@+id/button_number0"
+            style="@style/NumberButton"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:text="@string/Number0" />
+
+        <Button
+            android:id="@+id/button_comma"
+            style="@style/NumberButton"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:text="@string/Comma"/>
+
+        <Button
+            android:id="@+id/button_sec"
+            style="@style/NumberButton"
+            android:backgroundTint="#2B4161"
+            android:layout_width="73dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="sec"
+            tools:ignore="HardcodedText"/>
+
+    </LinearLayout>
+
 </LinearLayout>

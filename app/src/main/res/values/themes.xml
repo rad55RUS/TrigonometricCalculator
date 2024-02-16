@@ -7,18 +7,31 @@
 
     <style name="Theme.TrigonometricCalculatorFromRad55" parent="Base.Theme.TrigonometricCalculatorFromRad55" />
 
-    <!-- Button styles -->
+    <!-- Button layout style -->
+    <style name="ButtonLinearLayout" parent="">
+        <item name="android:layout_height">0px</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <!---->
+    <!-- Button style -->
     <style name="NumberButton" parent="@style/Widget.Material3.Button">
         <!-- Font style -->
         <item name="android:textColor">#FDFDFD</item>
         <item name="android:textSize">24sp</item>
-        <!-- Button style -->
+        <item name="android:textStyle">bold</item>
+        <!-- Placement style -->
+        <item name="android:layout_width">0px</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <!-- Shape style -->
         <item name="android:backgroundTint">#212121</item>
-        <item name="android:radius">1sp</item>
+        <item name="android:insetLeft">3dp</item>
+        <item name="android:insetRight">3dp</item>
         <item name="shapeAppearanceOverlay">@style/ButtonShapeAppearance</item>
     </style>
     <style name="ButtonShapeAppearance">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">32sp</item>
+        <item name="cornerSize">6sp</item>
     </style>
+    <!---->
 </resources>
