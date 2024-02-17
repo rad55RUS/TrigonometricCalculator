@@ -2,7 +2,6 @@ package com.example.trigonometriccalculatorrad55
 
 import android.os.Bundle
 import android.util.TypedValue
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -23,19 +22,39 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Observers
-        val CalculatorTextObserver = Observer<String> { newText ->
-            // Update the UI, in this case, a TextView.
+        /// Text
+        val calculatorTextObserver = Observer<String> { newText ->
             binding.calculatorTextView.text = newText
         }
 
-        model.calculatorText.observe(this, CalculatorTextObserver)
+        model.calculatorText.observe(this, calculatorTextObserver)
 
-        val CalculatorTextSizeObserver = Observer<Float> { newSize ->
-            // Update the UI, in this case, a TextView.
+        val calculatorOutputTextObserver = Observer<String> { newText ->
+            binding.calculatorOutputTextView.text = newText
+        }
+
+        model.calculatorOutputText.observe(this, calculatorOutputTextObserver)
+        ///
+        /// Text size
+        val calculatorTextSizeObserver = Observer<Float> { newSize ->
             binding.calculatorTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, newSize)
         }
 
-        model.calculatorTextSize.observe(this, CalculatorTextSizeObserver)
+        model.calculatorTextSize.observe(this, calculatorTextSizeObserver)
+        ///
+        /// View height
+        val calculatorInputHeightObserver = Observer<Int> { newHeight ->
+            binding.calculatorTextView.height = newHeight
+        }
+
+        model.calculatorInputHeight.observe(this, calculatorInputHeightObserver)
+
+        val calculatorOutputHeightObserver = Observer<Int> { newHeight ->
+            binding.calculatorOutputTextView.height = newHeight
+        }
+
+        model.calculatorOutputHeight.observe(this, calculatorOutputHeightObserver)
+        ///
         //
 
         // Bindings
@@ -95,8 +114,10 @@ class MainActivity : AppCompatActivity() {
         ///
         //
 
-        // Default values
-        model.calculatorText.value = "0"
+        // Set dpi density
+        model.density = resources.displayMetrics.density
         //
+
+        model.initialize()
     }
 }

@@ -12,20 +12,27 @@ import kotlin.math.tan
 
 class MainViewModel : ViewModel() {
     // Global data
-    /// Public data
-    public var isRad = true
-    public var isArc = false
-    public var isCo = false
+    /// Constants
+    private val calculatorInputHeightDefault = 259
+    private val calculatorInputHeightChanged = 223
+    private val calculatorOutputHeightDefault = 0
+    private val calculatorOutputHeightChanged = 36
     ///
     /// View data
+    var density = 0f
     private var isDecimal = false
-    private var calculatorTextString : String = "0"
-    private var calculatorTextStringSpaces : String = "0"
+    private var calculatorInputString : String = "0"
+    private var calculatorInputStringSpaces : String = "0"
     private var fractionalPartString : String = ""
     private var calculatorTextSizeFloat = 48f
     ///
     /// Model data
+    private var isRad = true
+    private var isArc = false
+    private var isCo = false
     private var currentFunction : Int = 0
+    ////
+    ///
     /*
     0 - Nothing
     1 - Sin
@@ -56,9 +63,23 @@ class MainViewModel : ViewModel() {
     val calculatorTextSize: MutableLiveData<Float> by lazy {
         MutableLiveData<Float>()
     }
+    val calculatorInputHeight: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
+    val calculatorOutputHeight: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
     //
 
-    // Events
+    // Initialization
+    fun initialize() {
+        calculatorOutputText.value = ""
+        calculatorText.value = "0"
+        setCalculatorTextHeight(true)
+    }
+    //
+
+    // Public methods
     /// Operation event
     fun trigonometricFunctionEvent(function : Int) {
         currentFunction = function
@@ -75,19 +96,19 @@ class MainViewModel : ViewModel() {
             3 -> if (cos(input) != 0.0)
                 output = 1 / cos(input)
             else
-                calculatorOutputText.value = "∞"
+                calculatorOutputText.value = "Cannot divide by zero"
             // Cos
             4 -> output = cos(input)
             // Ctg
             5 -> if (sin(input) != 0.0)
                 output = cos(input) / sin(input)
             else
-                calculatorOutputText.value = "∞"
+                calculatorOutputText.value = "Cannot divide by zero"
             // Cosec
             6 -> if (sin(input) != 0.0)
                 output = 1 / sin(input)
             else
-                calculatorOutputText.value = "∞"
+                calculatorOutputText.value = "Cannot divide by zero"
             // Arcsin
             7 -> output = asin(input)
             // Arctan
@@ -96,7 +117,7 @@ class MainViewModel : ViewModel() {
             9 -> if (input != 0.0)
                 output = acos(1 / input)
             else
-                calculatorOutputText.value = "∞"
+                calculatorOutputText.value = "Cannot divide by zero"
             // Arccos
             10 -> output = acos(input)
             // Arcctg
@@ -105,54 +126,81 @@ class MainViewModel : ViewModel() {
             12 -> if (input != 0.0)
                 output = asin(1 / input)
             else
-                calculatorOutputText.value = "∞"
+                calculatorOutputText.value = "Cannot divide by zero"
         }
+
+        // Update output view
+        var calculatorOutputString = output.toString()
+        /// Add spaces
+        var j = -1
+        if (calculatorOutputString.contains('.'))
+        for (i: Int in calculatorOutputString.length - 1 downTo 1) {
+            if (j > -1) {
+                j++
+                if (j % 3 == 0) {
+                    calculatorOutputString = calculatorOutputString.replaceRange(
+                        i - 1,
+                        i,
+                        calculatorOutputString[i - 1] + " "
+                    )
+                }
+            } else if (calculatorOutputString[i] == '.')
+            {
+                calculatorOutputString.replace('.', ',')
+                j = 0
+            }
+        }
+        ///
+        setCalculatorTextHeight(false)
+        calculatorOutputText.value = "=$calculatorOutputString"
+        //
     }
 
     /// Backspace button click event
     fun backspaceButtonClick() {
         if (!isDecimal) {
             // Update global data
-            calculatorTextString = if (calculatorTextString.length > 1) {
-                calculatorTextString.dropLast(1)
+            calculatorInputString = if (calculatorInputString.length > 1) {
+                calculatorInputString.dropLast(1)
             } else {
                 "0"
             }
-            input = calculatorTextString.toDouble()
+            input = calculatorInputString.toDouble()
             //
             // Add spaces
-            calculatorTextStringSpaces = calculatorTextString
+            calculatorInputStringSpaces = calculatorInputString
             var j = 0
-            for (i: Int in calculatorTextString.length - 1 downTo 1) {
+            for (i: Int in calculatorInputString.length - 1 downTo 1) {
                 j++
                 if (j % 3 == 0) {
-                    calculatorTextStringSpaces = calculatorTextStringSpaces.replaceRange(
+                    calculatorInputStringSpaces = calculatorInputStringSpaces.replaceRange(
                         i - 1,
                         i,
-                        calculatorTextString[i - 1] + " "
+                        calculatorInputString[i - 1] + " "
                     )
                 }
             }
             //
             // Update liva data
-            calculatorText.value = calculatorTextStringSpaces
+            calculatorText.value = calculatorInputStringSpaces
             //
 
         }
         else {
             if (fractionalPartString.length > 1) {
                 fractionalPartString = fractionalPartString.dropLast(1)
-                calculatorText.value = "$calculatorTextStringSpaces,$fractionalPartString"
+                calculatorText.value = "$calculatorInputStringSpaces,$fractionalPartString"
             }
             else {
                 fractionalPartString = ""
                 isDecimal = false
-                calculatorText.value = calculatorTextStringSpaces
+                calculatorText.value = calculatorInputStringSpaces
             }
-            input = (calculatorTextString + fractionalPartString).toDouble()
+            input = (calculatorInputString + fractionalPartString).toDouble()
         }
+        if (currentFunction != 0) trigonometricFunctionEvent(currentFunction)
         // Font changes
-        if ((calculatorTextString + fractionalPartString).length > 12) {
+        if ((calculatorInputString + fractionalPartString).length > 12) {
             calculatorTextSizeFloat += 2.5f
             calculatorTextSize.value = calculatorTextSizeFloat
         }
@@ -163,58 +211,61 @@ class MainViewModel : ViewModel() {
     /// Clear button click event
     fun clearButtonClick() {
         isDecimal = false
-        calculatorTextString = "0"
-        calculatorTextStringSpaces = "0"
+        calculatorInputString = "0"
+        calculatorInputStringSpaces = "0"
         fractionalPartString = ""
         input = 0.0
         output = 0.0
         calculatorText.value = "0"
+        setCalculatorTextHeight(true)
     }
     ///
 
     /// Number button click event
     fun numberButtonClick(number: Int) {
         if (!isDecimal) {
-            if (calculatorTextString.length != 9) {
+            if (calculatorInputString.length != 9) {
                 // Update global data
-                if (calculatorTextString != "0") {
-                    calculatorTextString += number.toString()
+                if (calculatorInputString != "0") {
+                    calculatorInputString += number.toString()
                 } else {
-                    calculatorTextString = number.toString()
+                    calculatorInputString = number.toString()
                 }
-                input = calculatorTextString.toDouble()
+                input = calculatorInputString.toDouble()
                 //
                 // Add spaces
-                calculatorTextStringSpaces = calculatorTextString
+                calculatorInputStringSpaces = calculatorInputString
                 var j = 0
-                for (i: Int in calculatorTextString.length - 1 downTo 1) {
+                for (i: Int in calculatorInputString.length - 1 downTo 1) {
                     j++
                     if (j % 3 == 0) {
-                        calculatorTextStringSpaces = calculatorTextStringSpaces.replaceRange(
+                        calculatorInputStringSpaces = calculatorInputStringSpaces.replaceRange(
                             i - 1,
                             i,
-                            calculatorTextString[i - 1] + " "
+                            calculatorInputString[i - 1] + " "
                         )
                     }
                 }
                 //
                 // Update liva data
-                calculatorText.value = calculatorTextStringSpaces
+                calculatorText.value = calculatorInputStringSpaces
                 //
             }
         } else {
             if (fractionalPartString.length < 10) {
                 fractionalPartString += number.toString()
                 calculatorText.value += number.toString()
-                input = (calculatorTextString + fractionalPartString).toDouble()
+                input = calculatorInputString.toDouble() + fractionalPartString.toDouble() / Math.pow(10.0, fractionalPartString.length.toDouble()
+                )
                 // Font changes
-                if ((calculatorTextString + fractionalPartString).length > 13) {
+                if ((calculatorInputString + fractionalPartString).length > 13) {
                     calculatorTextSizeFloat -= 2.5f
                     calculatorTextSize.value = calculatorTextSizeFloat
                 }
                 //
             }
         }
+        if (currentFunction != 0) trigonometricFunctionEvent(currentFunction)
     }
     ///
 
@@ -226,5 +277,18 @@ class MainViewModel : ViewModel() {
         }
     }
     ///
+    //
+
+    // Private methods
+    private fun setCalculatorTextHeight(toDefault : Boolean) {
+        if (toDefault) {
+            calculatorInputHeight.value = (calculatorInputHeightDefault * density + 0.05f).toInt()
+            calculatorOutputHeight.value = (calculatorOutputHeightDefault * density + 0.05f).toInt()
+        }
+        else {
+            calculatorInputHeight.value = (calculatorInputHeightChanged * density + 0.05f).toInt()
+            calculatorOutputHeight.value = (calculatorOutputHeightChanged * density + 0.05f).toInt()
+        }
+    }
     //
 }
