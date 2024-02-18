@@ -17,6 +17,7 @@
     <string name="Number0">0</string>
     <string name="PI">π</string>
     <string name="Comma">,</string>
+    <string name="Minus">-</string>
     <!-- Strings used for special actions -->
     <string name="Clear">AC</string>
 </resources>

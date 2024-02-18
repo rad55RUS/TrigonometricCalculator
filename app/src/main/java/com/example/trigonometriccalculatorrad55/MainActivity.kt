@@ -1,5 +1,8 @@
 package com.example.trigonometriccalculatorrad55
 
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.activity.viewModels
@@ -22,6 +25,52 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Observers
+        /// Button color
+        //// Sin button
+        val sinButtonColorObserver = Observer<Int> {newColor ->
+            binding.buttonSin.setBackgroundColor(newColor)
+        }
+
+        model.sinButtonColor.observe(this, sinButtonColorObserver)
+        //// Tan button
+        val tanButtonColorObserver = Observer<Int> {newColor ->
+            binding.buttonTan.setBackgroundColor(newColor)
+        }
+
+        model.tanButtonColor.observe(this, tanButtonColorObserver)
+        //// Sec button
+        val secButtonColorObserver = Observer<Int> {newColor ->
+            binding.buttonSec.setBackgroundColor(newColor)
+        }
+
+        model.secButtonColor.observe(this, secButtonColorObserver)
+        ///
+        /// Button text
+        //// View mode (rad/deg)
+        val viewModeButtonTextObserver = Observer<String> {newText ->
+            binding.buttonViewMode.text = newText
+        }
+
+        model.viewModeText.observe(this, viewModeButtonTextObserver)
+        //// Sin button
+        val sinButtonTextObserver = Observer<String> {newText ->
+            binding.buttonSin.text = newText
+        }
+
+        model.sinButtonText.observe(this, sinButtonTextObserver)
+        //// Tan button
+        val tanButtonTextObserver = Observer<String> {newText ->
+            binding.buttonTan.text = newText
+        }
+
+        model.tanButtonText.observe(this, tanButtonTextObserver)
+        //// Sec button
+        val secButtonTextObserver = Observer<String> {newText ->
+            binding.buttonSec.text = newText
+        }
+
+        model.secButtonText.observe(this, secButtonTextObserver)
+        ///
         /// Text
         val calculatorTextObserver = Observer<String> { newText ->
             binding.calculatorTextView.text = newText
@@ -93,18 +142,35 @@ class MainActivity : AppCompatActivity() {
             model.commaButtonClick()
         }
         ///
+        /// Mode buttons
+        binding.buttonViewMode.setOnClickListener {
+            model.changeViewMode()
+        }
+        binding.button2nd.setOnClickListener {
+            model.change2nd()
+        }
+        binding.buttonCo.setOnClickListener {
+            model.changeCo()
+        }
+        binding.buttonPI.setOnClickListener {
+            model.changePI()
+        }
+        binding.buttonMinus.setOnClickListener {
+            model.changeMinus()
+        }
+        ///
         /// Function buttons
         binding.buttonSin.setOnClickListener {
             model.trigonometricFunctionEvent(1)
         }
-        binding.buttonTg.setOnClickListener {
+        binding.buttonTan.setOnClickListener {
             model.trigonometricFunctionEvent(2)
         }
         binding.buttonSec.setOnClickListener {
             model.trigonometricFunctionEvent(3)
         }
         ///
-        /// Operation buttons
+        /// Delete buttons
         binding.buttonClear.setOnClickListener {
             model.clearButtonClick()
         }
@@ -114,8 +180,9 @@ class MainActivity : AppCompatActivity() {
         ///
         //
 
-        // Set dpi density
+        // Set model data
         model.density = resources.displayMetrics.density
+        model.isDarkTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES
         //
 
         model.initialize()

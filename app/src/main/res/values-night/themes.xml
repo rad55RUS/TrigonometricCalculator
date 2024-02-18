@@ -1,9 +1,100 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.TrigonometricCalculatorFromRad55" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/darkgray</item>
     </style>
 
-    <!-- Button styles -->
+    <style name="Theme.TrigonometricCalculatorFromRad55" parent="Base.Theme.TrigonometricCalculatorFromRad55" />
+
+    <!-- Status bar color -->
+    <style name="AppTheme">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
+    </style>
+    <!-- Linear Layout Style -->
+    <style name="LinearLayout">
+        <item name="android:background">@color/darkgray</item>
+    </style>
+    <!-- Button layout style -->
+    <style name="ButtonLinearLayout" parent="">
+        <item name="android:layout_height">0px</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <!-- Upper button layuout style -->
+    <style name="UpperButtonLinearLayout" parent="">
+        <item name="android:layout_height">74dp</item>
+        <item name="android:layout_weight">0</item>
+    </style>
+    <!-- Input text style -->
+    <style name ="InputText" parent="@style/Widget.MaterialComponents.TextView">
+        <item name="android:textColor">#F4F4F4</item>
+    </style>
+    <!-- Output text style -->
+    <style name ="OutputText" parent="@style/Widget.MaterialComponents.TextView">
+        <item name="android:textColor">#D0D0D0</item>
+    </style>
+    <!-- Button style -->
+    <style name="NumberButton" parent="@style/Widget.Material3.Button">
+        <!-- Font style -->
+        <item name="android:textColor">#FDFDFD</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- Placement style -->
+        <item name="android:layout_width">0px</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <!-- Shape style -->
+        <item name="android:backgroundTint">#212121</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:insetLeft">3dp</item>
+        <item name="android:insetRight">3dp</item>
+        <item name="shapeAppearanceOverlay">@style/ButtonShapeAppearance</item>
+    </style>
+    <style name="ButtonShapeAppearance">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">6sp</item>
+    </style>
+    <!-- Minus button style -->
+    <style name="MinusButton" parent="@style/NumberButton">
+        <item name="android:textSize">48sp</item>
+        <item name="android:backgroundTint">#8A4428</item>
+    </style>
+    <!-- Mode button style -->
+    <style name="ModeButton" parent="@style/NumberButton">
+        <item name="android:textSize">24sp</item>
+        <item name="android:backgroundTint">#936E3D</item>
+    </style>
+    <!-- Remove button style -->
+    <style name="RemoveButton" parent="@style/NumberButton">
+        <item name="android:textSize">24sp</item>
+        <item name="android:backgroundTint">#8F2828</item>
+    </style>
+    <!-- Function button style -->
+    <style name="FunctionButton" parent="@style/NumberButton">
+        <item name="android:textSize">24sp</item>
+        <item name="android:backgroundTint">#2B4161</item>
+    </style>
+    <!-- Icon button style -->
+    <style name="IconButton" parent="@style/Widget.Material3.Button">
+        <!-- Font style -->
+        <item name="android:textColor">#FDFDFD</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- Placement style -->
+        <item name="android:layout_width">0px</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <!-- Shape style -->
+        <item name="android:backgroundTint">#212121</item>
+        <item name="android:insetLeft">3dp</item>
+        <item name="android:insetRight">3dp</item>
+        <item name="shapeAppearanceOverlay">@style/ButtonShapeAppearance</item>
+    </style>
+    <!-- Remove icon button style -->
+    <style name="RemoveIconButton" parent="@style/IconButton">
+        <item name="android:backgroundTint">#8F2828</item>
+    </style>
 </resources>

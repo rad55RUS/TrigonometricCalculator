@@ -1,5 +1,6 @@
 package com.example.trigonometriccalculatorrad55
 
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.math.PI
@@ -13,13 +14,14 @@ import kotlin.math.tan
 class MainViewModel : ViewModel() {
     // Global data
     /// Constants
-    private val calculatorInputHeightDefault = 259
-    private val calculatorInputHeightChanged = 223
+    private val calculatorInputHeightDefault = 299
+    private val calculatorInputHeightChanged = 263
     private val calculatorOutputHeightDefault = 0
     private val calculatorOutputHeightChanged = 36
     ///
     /// View data
     var density = 0f
+    var isDarkTheme = false
     private var isDecimal = false
     private var calculatorInputString : String = "0"
     private var calculatorInputStringSpaces : String = "0"
@@ -28,6 +30,8 @@ class MainViewModel : ViewModel() {
     ///
     /// Model data
     private var isRad = true
+    private var isPI = false
+    private var isMinus = false
     private var isArc = false
     private var isCo = false
     private var currentFunction : Int = 0
@@ -54,12 +58,36 @@ class MainViewModel : ViewModel() {
     //
 
     // Live data
+    /// Text data
     val calculatorText: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
     val calculatorOutputText: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
+    val viewModeText: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    val sinButtonText: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    val tanButtonText: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    val secButtonText: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    /// Color data
+    val sinButtonColor: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
+    val tanButtonColor: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
+    val secButtonColor: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
+    /// Size data
     val calculatorTextSize: MutableLiveData<Float> by lazy {
         MutableLiveData<Float>()
     }
@@ -80,80 +108,157 @@ class MainViewModel : ViewModel() {
     //
 
     // Public methods
-    /// Operation event
+    /// Change view mode (rad/deg)
+    fun changeViewMode() {
+        isRad = !isRad
+        if (isRad) viewModeText.value = "rad"
+        else viewModeText.value = "deg"
+        setPrefix()
+        trigonometricFunctionEvent(currentFunction)
+    }
+
+    /// Change view mode (rad/deg)
+    fun change2nd() {
+        isArc = !isArc
+        changeFunctionNames()
+        setPrefix()
+        trigonometricFunctionEvent(currentFunction)
+    }
+
+    /// Change view mode (rad/deg)
+    fun changeCo() {
+        isCo = !isCo
+        changeFunctionNames()
+        trigonometricFunctionEvent(currentFunction)
+    }
+
+    /// Change PI mode
+    fun changePI() {
+        isPI = !isPI
+        setPrefix()
+        trigonometricFunctionEvent(currentFunction)
+    }
+
+    /// Change Minus mode
+    fun changeMinus() {
+        isMinus = !isMinus
+        setPrefix()
+        trigonometricFunctionEvent(currentFunction)
+    }
+
+    /// Function event
     fun trigonometricFunctionEvent(function : Int) {
         currentFunction = function
-        if (isCo)
-            currentFunction += 3
-        if (isArc)
-            currentFunction += 6
-        when (currentFunction) {
-            // Sin
-            1 -> output = sin(input)
-            // Tan
-            2 -> output = tan(input)
-            // Sec
-            3 -> if (cos(input) != 0.0)
-                output = 1 / cos(input)
-            else
-                calculatorOutputText.value = "Cannot divide by zero"
-            // Cos
-            4 -> output = cos(input)
-            // Ctg
-            5 -> if (sin(input) != 0.0)
-                output = cos(input) / sin(input)
-            else
-                calculatorOutputText.value = "Cannot divide by zero"
-            // Cosec
-            6 -> if (sin(input) != 0.0)
-                output = 1 / sin(input)
-            else
-                calculatorOutputText.value = "Cannot divide by zero"
-            // Arcsin
-            7 -> output = asin(input)
-            // Arctan
-            8 -> output = atan(input)
-            // Arcsec
-            9 -> if (input != 0.0)
-                output = acos(1 / input)
-            else
-                calculatorOutputText.value = "Cannot divide by zero"
-            // Arccos
-            10 -> output = acos(input)
-            // Arcctg
-            11 -> output = PI / 2 - atan(input)
-            // Arccsc
-            12 -> if (input != 0.0)
-                output = asin(1 / input)
-            else
-                calculatorOutputText.value = "Cannot divide by zero"
-        }
-
-        // Update output view
-        var calculatorOutputString = output.toString()
-        /// Add spaces
-        var j = -1
-        if (calculatorOutputString.contains('.'))
-        for (i: Int in calculatorOutputString.length - 1 downTo 1) {
-            if (j > -1) {
-                j++
-                if (j % 3 == 0) {
-                    calculatorOutputString = calculatorOutputString.replaceRange(
-                        i - 1,
-                        i,
-                        calculatorOutputString[i - 1] + " "
-                    )
+        if (currentFunction != 0) {
+            // Set color
+            when (currentFunction) {
+                1, 4, 7, 10 -> {
+                    if (isDarkTheme) {
+                        sinButtonColor.value = Color.parseColor("#151F2C")
+                        tanButtonColor.value = Color.parseColor("#2B4161")
+                        secButtonColor.value = Color.parseColor("#2B4161")
+                    } else {
+                        sinButtonColor.value = Color.parseColor("#38126A")
+                        tanButtonColor.value = Color.parseColor("#772DDF")
+                        secButtonColor.value = Color.parseColor("#772DDF")
+                    }
                 }
-            } else if (calculatorOutputString[i] == '.')
-            {
-                calculatorOutputString.replace('.', ',')
-                j = 0
+
+                2, 5, 8, 11 -> {
+                    if (isDarkTheme) {
+                        sinButtonColor.value = Color.parseColor("#2B4161")
+                        tanButtonColor.value = Color.parseColor("#151F2C")
+                        secButtonColor.value = Color.parseColor("#2B4161")
+                    } else {
+                        sinButtonColor.value = Color.parseColor("#772DDF")
+                        tanButtonColor.value = Color.parseColor("#38126A")
+                        secButtonColor.value = Color.parseColor("#772DDF")
+                    }
+                }
+
+                3, 6, 9, 12 -> {
+                    if (isDarkTheme) {
+                        sinButtonColor.value = Color.parseColor("#2B4161")
+                        tanButtonColor.value = Color.parseColor("#2B4161")
+                        secButtonColor.value = Color.parseColor("#151F2C")
+                    } else {
+                        sinButtonColor.value = Color.parseColor("#772DDF")
+                        tanButtonColor.value = Color.parseColor("#772DDF")
+                        secButtonColor.value = Color.parseColor("#38126A")
+                    }
+                }
             }
+            // Check modes
+            var tempFunction = currentFunction
+            if (isCo)
+                tempFunction += 3
+            if (isArc)
+                tempFunction += 6
+            var inputTemp : Double = input
+            /// Translate to degrees
+            if (!isRad) {
+                inputTemp =
+                    if (isPI) inputTemp * Math.PI
+                    else inputTemp * Math.PI / 180
+            } else if (isPI) {
+                inputTemp *= Math.PI
+            }
+            if (isMinus) inputTemp = -inputTemp
+            ///
+            //
+            when (tempFunction) {
+                // Sin
+                1 -> output = sin(inputTemp)
+                // Tan
+                2 -> output = tan(inputTemp)
+                // Sec
+                3 -> output = 1 / cos(inputTemp)
+                // Cos
+                4 -> output = cos(inputTemp)
+                // Ctg
+                5 -> output = cos(inputTemp) / sin(inputTemp)
+                // Cosec
+                6 -> output = 1 / sin(inputTemp)
+                // Arcsin
+                7 -> output = asin(inputTemp)
+                // Arctan
+                8 -> output = atan(inputTemp)
+                // Arcsec
+                9 -> output = acos(1 / inputTemp)
+                // Arccos
+                10 -> output = acos(inputTemp)
+                // Arcctg
+                11 -> output = PI / 2 - atan(inputTemp)
+                // Arccsc
+                12 -> output = asin(1 / inputTemp)
+            }
+
+            // Update output view
+            var calculatorOutputString = output.toString()
+            /// Add spaces
+            var j = -1
+            if (calculatorOutputString.contains('.'))
+                for (i: Int in calculatorOutputString.length - 1 downTo 1) {
+                    if (j > -1) {
+                        j++
+                        if (j % 3 == 0) {
+                            calculatorOutputString = calculatorOutputString.replaceRange(
+                                i - 1,
+                                i,
+                                calculatorOutputString[i - 1] + " "
+                            )
+                        }
+                    } else if (calculatorOutputString[i] == '.') {
+                        calculatorOutputString.replace('.', ',')
+                        j = 0
+                    }
+                }
+            ///
+            setCalculatorTextHeight(false)
+            calculatorOutputText.value = "=$calculatorOutputString"
+            //
+            setPrefix()
         }
-        ///
-        setCalculatorTextHeight(false)
-        calculatorOutputText.value = "=$calculatorOutputString"
-        //
     }
 
     /// Backspace button click event
@@ -200,11 +305,12 @@ class MainViewModel : ViewModel() {
         }
         if (currentFunction != 0) trigonometricFunctionEvent(currentFunction)
         // Font changes
-        if ((calculatorInputString + fractionalPartString).length > 12) {
-            calculatorTextSizeFloat += 2.5f
+        if ((calculatorInputString + fractionalPartString).length > 10) {
+            calculatorTextSizeFloat += 2.2f
             calculatorTextSize.value = calculatorTextSizeFloat
         }
         //
+        setPrefix()
     }
     ///
 
@@ -218,6 +324,16 @@ class MainViewModel : ViewModel() {
         output = 0.0
         calculatorText.value = "0"
         setCalculatorTextHeight(true)
+        setPrefix()
+        if (isDarkTheme) {
+            sinButtonColor.value = Color.parseColor("#2B4161")
+            tanButtonColor.value = Color.parseColor("#2B4161")
+            secButtonColor.value = Color.parseColor("#2B4161")
+        } else {
+            sinButtonColor.value = Color.parseColor("#772DDF")
+            tanButtonColor.value = Color.parseColor("#772DDF")
+            secButtonColor.value = Color.parseColor("#772DDF")
+        }
     }
     ///
 
@@ -258,13 +374,14 @@ class MainViewModel : ViewModel() {
                 input = calculatorInputString.toDouble() + fractionalPartString.toDouble() / Math.pow(10.0, fractionalPartString.length.toDouble()
                 )
                 // Font changes
-                if ((calculatorInputString + fractionalPartString).length > 13) {
-                    calculatorTextSizeFloat -= 2.5f
+                if ((calculatorInputString + fractionalPartString).length > 11) {
+                    calculatorTextSizeFloat -= 2.2f
                     calculatorTextSize.value = calculatorTextSizeFloat
                 }
                 //
             }
         }
+        setPrefix()
         if (currentFunction != 0) trigonometricFunctionEvent(currentFunction)
     }
     ///
@@ -275,11 +392,58 @@ class MainViewModel : ViewModel() {
             calculatorText.value += ','
             isDecimal = true
         }
+        setPrefix()
     }
     ///
     //
 
     // Private methods
+    private fun setPrefix() {
+        if (isRad) {
+            calculatorText.value = calculatorText.value?.replace("°", "")
+            calculatorOutputText.value = calculatorOutputText.value?.replace("°", "")
+            calculatorText.value = calculatorText.value?.replace("π", "")
+            calculatorText.value = calculatorText.value?.replace("-", "")
+            if (isMinus) calculatorText.value = '-' + calculatorText.value.toString()
+            if (isPI) calculatorText.value += 'π'
+        }
+        else {
+            calculatorText.value = calculatorText.value?.replace("°", "")
+            calculatorOutputText.value = calculatorOutputText.value?.replace("°", "")
+            calculatorText.value = calculatorText.value?.replace("π", "")
+            calculatorText.value = calculatorText.value?.replace("-", "")
+            if (isMinus) calculatorText.value = '-' + calculatorText.value.toString()
+            if (isPI) calculatorText.value += 'π'
+            calculatorText.value += '°'
+            calculatorOutputText.value += '°'
+        }
+    }
+    private fun changeFunctionNames() {
+        if (isArc) {
+            if (isCo) {
+                sinButtonText.value = "acos"
+                tanButtonText.value = "actg"
+                secButtonText.value = "acsc"
+            }
+            else {
+                sinButtonText.value = "asin"
+                tanButtonText.value = "atan"
+                secButtonText.value = "asec"
+            }
+        } else {
+            if (isCo) {
+                sinButtonText.value = "cos"
+                tanButtonText.value = "ctg"
+                secButtonText.value = "csc"
+            }
+            else {
+                sinButtonText.value = "sin"
+                tanButtonText.value = "tan"
+                secButtonText.value = "sec"
+            }
+        }
+    }
+
     private fun setCalculatorTextHeight(toDefault : Boolean) {
         if (toDefault) {
             calculatorInputHeight.value = (calculatorInputHeightDefault * density + 0.05f).toInt()
